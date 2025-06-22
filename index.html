@@ -209,7 +209,7 @@
             {
                 image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjgwIiBmaWxsPSIjZmZkNzAwIiBzdHJva2U9IiNmZmE1MDAiIHN0cm9rZS13aWR0aD0iNCIvPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iNDAiIGZpbGw9IiNmZjg5MDAiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5aSqPemdmTwvdGV4dD4KPC9zdmc+",
                 question: "この天体は何ですか？",
-                choices: ["太陽", "月"],
+                choices: ["太陽", "月","haka"],
                 correct: 0
             },
             {
@@ -243,6 +243,8 @@
         let timeLeft = 0;
         let timer = null;
         let answered = false;
+        let shuffledChoices = [];
+        let correctIndex = 0;
 
         function startGame() {
             document.getElementById('startScreen').classList.add('hidden');
@@ -253,6 +255,19 @@
         function showQuestion() {
             answered = false;
             const question = questions[currentQuestion];
+            
+            // 選択肢をシャッフル
+            const choices = [...question.choices];
+            const correctAnswer = choices[question.correct];
+            
+            // 選択肢をランダムに配置
+            if (Math.random() < 0.5) {
+                shuffledChoices = [choices[0], choices[1]];
+                correctIndex = question.correct;
+            } else {
+                shuffledChoices = [choices[1], choices[0]];
+                correctIndex = question.correct === 0 ? 1 : 0;
+            }
             
             document.getElementById('questionImage').src = question.image;
             document.getElementById('questionText').textContent = question.question;
@@ -275,12 +290,11 @@
         }
 
         function showChoices() {
-            const question = questions[currentQuestion];
-            
             document.getElementById('answerPhase').classList.remove('hidden');
             
-            document.getElementById('choice1').textContent = question.choices[0];
-            document.getElementById('choice2').textContent = question.choices[1];
+            // シャッフルされた選択肢を表示
+            document.getElementById('choice1').textContent = shuffledChoices[0];
+            document.getElementById('choice2').textContent = shuffledChoices[1];
             
             // 選択肢ボタンをリセット
             document.getElementById('choice1').className = 'choice-btn';
@@ -322,8 +336,6 @@
             answered = true;
             clearInterval(timer);
             
-            const question = questions[currentQuestion];
-            const correct = question.correct;
             const resultElement = document.getElementById('result');
             const choice1 = document.getElementById('choice1');
             const choice2 = document.getElementById('choice2');
@@ -332,7 +344,14 @@
                 // タイムアウト
                 resultElement.textContent = '時間切れ！ -10点';
                 score -= 10;
-            } else if (choiceIndex === correct) {
+                
+                // 正解の選択肢を表示
+                if (correctIndex === 0) {
+                    choice1.classList.add('correct');
+                } else {
+                    choice2.classList.add('correct');
+                }
+            } else if (choiceIndex === correctIndex) {
                 // 正解
                 const bonus = Math.max(1, timeLeft + 1);
                 const points = 10 + bonus;
