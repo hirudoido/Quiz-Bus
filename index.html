@@ -444,6 +444,10 @@
         }
 
         function showChoices() {
+             // 10秒のタイマー開始
+            timeLeft = 10;
+            startTimer();
+            
             document.getElementById('answerPhase').classList.remove('hidden');
             
             // シャッフルされた選択肢を表示
@@ -456,9 +460,7 @@
             document.getElementById('result').textContent = '';
             document.getElementById('nextBtn').classList.add('hidden');
             
-            // 10秒のタイマー開始
-            timeLeft = 10;
-            startTimer();
+          
         }
 
         function startTimer() {
