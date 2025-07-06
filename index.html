@@ -2,358 +2,281 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>2択クイズゲーム</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二択早押しクイズ</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
-
+        
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             color: white;
-            padding: 10px;
-            overflow-x: hidden;
         }
-
-        .game-container {
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            position: relative;
-            min-height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            text-align: center;
         }
-
-        .score {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 10px;
-            z-index: 10;
+        
+        .screen {
+            display: none;
         }
-
-        .question-image {
-            width: min(250px, 75vw);
-            height: auto;
+        
+        .screen.active {
+            display: block;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .rules {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
             border-radius: 15px;
-            margin: 0 auto 20px;
-            object-fit: cover;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .question-text {
-            font-size: clamp(20px, 5vw, 28px);
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            line-height: 1.3;
-        }
-
-        .timer {
-            font-size: clamp(36px, 8vw, 48px);
-            font-weight: bold;
-            color: #ff6b6b;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .timer.warning {
-            color: #ff3838;
-            animation: pulse 0.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
-        }
-
-        .choices {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-            width: 100%;
-        }
-
-        .choice-btn {
-            width: 100%;
-            max-width: 350px;
-            padding: 18px 20px;
-            font-size: clamp(16px, 4vw, 20px);
-            font-weight: bold;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none;
-            word-wrap: break-word;
-            line-height: 1.3;
-        }
-
-        .choice-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .choice-btn:active {
-            transform: translateY(0);
-            transition: transform 0.1s;
-        }
-
-        .choice-btn.correct {
-            background: linear-gradient(45deg, #56ab2f 0%, #a8e6cf 100%);
-            animation: correctAnswer 0.6s ease;
-        }
-
-        .choice-btn.incorrect {
-            background: linear-gradient(45deg, #ff416c 0%, #ff4b2b 100%);
-            animation: incorrectAnswer 0.6s ease;
-        }
-
-        @keyframes correctAnswer {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes incorrectAnswer {
-            0%, 20%, 40%, 60%, 80%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-        }
-
-        .result {
-            font-size: clamp(18px, 4vw, 24px);
-            font-weight: bold;
-            margin-top: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            line-height: 1.4;
-        }
-
-        .next-btn {
-            margin-top: 25px;
-            padding: 15px 30px;
-            font-size: clamp(16px, 3.5vw, 18px);
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .next-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .next-btn:active {
-            transform: translateY(0);
-            transition: transform 0.1s;
-        }
-
-        .countdown {
-            font-size: clamp(24px, 6vw, 36px);
-            font-weight: bold;
-            color: #ffd700;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-            line-height: 1.3;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .start-title {
-            font-size: clamp(32px, 8vw, 48px);
-            font-weight: bold;
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-        }
-
-        .start-rules {
-            font-size: clamp(16px, 3.5vw, 20px);
-            margin-bottom: 30px;
+            margin: 1.5rem 0;
+            text-align: left;
             line-height: 1.6;
         }
-
-        .start-rules div {
-            margin-bottom: 10px;
+        
+        .rules h3 {
+            color: #ffd700;
+            margin-bottom: 1rem;
         }
-
-        .start-btn {
-            font-size: clamp(20px, 4vw, 24px);
-            padding: 20px 40px;
-            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
-            border: none;
-            border-radius: 15px;
+        
+        .start-btn, .choice-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
             color: white;
-            font-weight: bold;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none;
+            margin: 0.8rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
-
-        .start-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        
+        .start-btn:hover, .choice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
         }
-
-        .start-btn:active {
-            transform: translateY(0);
-            transition: transform 0.1s;
+        
+        .quiz-image {
+            width: 100%;
+            max-width: 400px;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
-
-        /* タブレット用の調整 */
-        @media (min-width: 768px) and (max-width: 1024px) {
-            .game-container {
-                max-width: 600px;
-                padding: 30px;
+        
+        .question {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .choices {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 0.1rem 0;
+        }
+        
+        .choice-btn {
+            flex: 1;
+            min-width: 150px;
+            max-width: 300px;
+            padding: 0.9rem;
+            font-size: 1.1rem;
+        }
+        
+        .choice-btn:nth-child(1) {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+        
+        .choice-btn:nth-child(2) {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+        }
+        
+        .timer {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            color: #ffd700;
+        }
+        
+        .score {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            color: #ffd700;
+        }
+        
+        .progress {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(45deg, #ffd700, #ffb347);
+            height: 10px;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+        
+        .result {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .result.correct {
+            color: #4ecdc4;
+        }
+        
+        .result.incorrect {
+            color: #ff6b6b;
+        }
+        
+        .final-score {
+            font-size: 2rem;
+            color: #ffd700;
+            margin: 1rem 0;
+        }
+        
+        .countdown {
+            font-size: 3rem;
+            color: #ffd700;
+            margin: 2rem 0;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question {
+                font-size: 1.2rem;
             }
             
             .choices {
-                flex-direction: row;
-                gap: 20px;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
             }
             
             .choice-btn {
-                flex: 1;
-                min-width: 200px;
+                width: 100%;
+                max-width: 100%;
+                min-width: 100%;
+                padding: 0.7rem;
+                font-size: 1.0rem;
             }
         }
-
-        /* デスクトップ用の調整 */
-        @media (min-width: 1025px) {
-            .game-container {
-                max-width: 600px;
-                padding: 30px;
+        
+        @media (max-width: 480px) {
+            .choice-btn {
+                padding: 0.65rem;
+                font-size: 1rem;
+                margin: 0rem ;
             }
             
-            .choices {
-                flex-direction: row;
-                gap: 20px;
+            .quiz-image {
+                max-height: 200px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .container {
+                padding: 0.5rem;
             }
             
             .choice-btn {
-                flex: 1;
-                min-width: 200px;
-            }
-        }
-
-        /* 超小型デバイス用の調整 */
-        @media (max-width: 320px) {
-            .game-container {
-                padding: 15px;
-                margin: 5px;
-            }
-            
-            .score {
-                font-size: 16px;
-                padding: 6px 12px;
-                top: 10px;
-                right: 10px;
-            }
-        }
-
-        /* 横向きスマホ用の調整 */
-        @media (max-height: 500px) and (orientation: landscape) {
-            body {
-                padding: 5px;
-            }
-            
-            .game-container {
-                min-height: 90vh;
-                padding: 15px;
-            }
-            
-            .question-image {
-                width: min(150px, 25vw);
-                height: min(150px, 25vw);
-                margin-bottom: 15px;
-            }
-            
-            .question-text {
-                margin-bottom: 15px;
-            }
-            
-            .timer {
-                margin-bottom: 15px;
+                padding: 0.5rem;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="score">スコア: <span id="score">0</span></div>
-    
-    <div class="game-container">
-        <div id="startScreen">
-            <div class="start-title">
-                🧠 2択クイズゲーム
+    <div class="container">
+        <!-- スタート画面 -->
+        <div class="screen active" id="startScreen">
+            <h1>🎯 二択早押しクイズ</h1>
+            <div class="rules">
+                <h3>📋 ルール説明</h3>
+                <p>• 画像と問題が2.5秒間表示されます</p>
+                <p>• その後、選択肢と制限時間が表示されます</p>
+                <p>• 早く正解するほど高得点が獲得できます</p>
+                <p>• 間違えると得点がマイナスになります</p>
+                <p>• 全問題終了後に結果が表示されます</p>
             </div>
-            <div class="start-rules">
-                <div>✅ 正解: 10点 + 時間ボーナス</div>
-                <div>❌ 不正解: -5点 - 時間ペナルティ</div>
-                <div>⏰ 時間切れ: -10点</div>
-            </div>
-            <button class="start-btn" onclick="startGame()">
-                🚀 ゲームスタート
-            </button>
+            <button class="start-btn" onclick="startQuiz()">🚀 クイズスタート</button>
         </div>
         
-        <div id="gameScreen" class="hidden">
-            <img id="questionImage" class="question-image" src="" alt="問題画像">
-            <div id="questionText" class="question-text"></div>
-            
-            <div id="countdown" class="countdown"></div>
-            <div id="result" class="result"></div>
-            
-            <div id="answerPhase" class="hidden">
-                <div id="timer" class="timer"></div>
-                <div class="choices">
-                    <button class="choice-btn" id="choice1" onclick="selectAnswer(0)"></button>
-                    <button class="choice-btn" id="choice2" onclick="selectAnswer(1)"></button>
-                </div>
-                
-                <button id="nextBtn" class="next-btn hidden" onclick="nextQuestion()">次の問題</button>
+        <!-- クイズ画面 -->
+        <div class="screen" id="quizScreen">
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
             </div>
+            <div class="score">現在のスコア: <span id="currentScore">0</span>点</div>
+            
+            <div id="questionDisplay">
+                <img class="quiz-image" id="quizImage" src="" alt="クイズ画像">
+                <div class="question" id="questionText"></div>
+            </div>
+            
+            <div class="countdown" id="countdown" style="display: none;">3</div>
+            
+            <div id="choiceSection" style="display: none;">
+                <div class="timer" id="timer">制限時間: <span id="timeLeft">10</span>秒</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="selectChoice(0)" id="choice0"></button>
+                    <button class="choice-btn" onclick="selectChoice(1)" id="choice1"></button>
+                </div>
+            </div>
+            
+            <div class="result" id="result" style="display: none;"></div>
+        </div>
+        
+        <!-- 結果画面 -->
+        <div class="screen" id="resultScreen">
+            <h1>🏆 クイズ結果</h1>
+            <div class="final-score" id="finalScore"></div>
+            <div id="resultDetails"></div>
+            <button class="start-btn" onclick="restartQuiz()">もう一度プレイ</button>
         </div>
     </div>
 
     <script>
-        const questions = [
+        // クイズデータ（画像URLを実際のURLに置き換えてください）
+        const quizData = [
             {
                 image: "IMGP1400.webp",
                 question: "これはどの会社のバス？",
@@ -392,207 +315,173 @@
             }
         ];
 
+        
         let currentQuestion = 0;
         let score = 0;
-        let timeLeft = 0;
-        let timer = null;
-        let answered = false;
-        let shuffledChoices = [];
-        let correctIndex = 0;
-
-        function startGame() {
-            document.getElementById('startScreen').classList.add('hidden');
-            document.getElementById('gameScreen').classList.remove('hidden');
-            showQuestion();
-        }
-
-        function showQuestion() {
-            answered = false;
-            const question = questions[currentQuestion];
-            
-            // 選択肢をシャッフル
-            const choices = [...question.choices];
-            const correctAnswer = choices[question.correct];
-            
-            // 選択肢をランダムに配置
-            if (Math.random() < 0.5) {
-                shuffledChoices = [choices[0], choices[1]];
-                correctIndex = question.correct;
-            } else {
-                shuffledChoices = [choices[1], choices[0]];
-                correctIndex = question.correct === 0 ? 1 : 0;
+        let timeLeft = 10;
+        let timer;
+        let startTime;
+        let answers = [];
+        let shuffledQuizData = [];
+        let currentChoiceOrder = [];
+        
+        // 配列をシャッフルする関数
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
             }
-            
-            document.getElementById('questionImage').src = question.image;
-            document.getElementById('questionText').textContent = question.question;
-            document.getElementById('answerPhase').classList.add('hidden');
-            
-            // 2.5秒のカウントダウン
-            let countdown = 3;
-            const countdownElement = document.getElementById('countdown');
-            
-            const countdownTimer = setInterval(() => {
-                countdown--;
-                if (countdown > 0) {
-                    countdownElement.textContent = `${countdown}秒後に選択肢が表示されます`;
-                } else {
-                    countdownElement.textContent = '';
-                    clearInterval(countdownTimer);
-                    showChoices();
-                }
-            }, 1000);
+            return shuffled;
         }
-
-        function showChoices() {
-             // 10秒のタイマー開始
-            timeLeft = 10;
-            startTimer();
-            
-            document.getElementById('answerPhase').classList.remove('hidden');
-            
-            // シャッフルされた選択肢を表示
-            document.getElementById('choice1').textContent = shuffledChoices[0];
-            document.getElementById('choice2').textContent = shuffledChoices[1];
-            
-            // 選択肢ボタンをリセット
-            document.getElementById('choice1').className = 'choice-btn';
-            document.getElementById('choice2').className = 'choice-btn';
-            document.getElementById('result').textContent = '';
-            document.getElementById('nextBtn').classList.add('hidden');
-            
-          
-        }
-
-        function startTimer() {
-            const timerElement = document.getElementById('timer');
-            
-            timer = setInterval(() => {
-                timerElement.textContent = `${timeLeft}秒`;
-                
-                if (timeLeft <= 3) {
-                    timerElement.classList.add('warning');
-                } else {
-                    timerElement.classList.remove('warning');
-                }
-                
-                timeLeft--;
-                
-                if (timeLeft < 0) {
-                    clearInterval(timer);
-                    if (!answered) {
-                        selectAnswer(-1); // タイムアウト
-                    }
-                }
-            }, 1000);
-        }
-
-        function selectAnswer(choiceIndex) {
-            if (answered) return;
-            
-            answered = true;
-            clearInterval(timer);
-            
-            const resultElement = document.getElementById('result');
-            const choice1 = document.getElementById('choice1');
-            const choice2 = document.getElementById('choice2');
-            
-            if (choiceIndex === -1) {
-                // タイムアウト
-                resultElement.textContent = '時間切れ！ -10点';
-                score -= 10;
-                
-                // 正解の選択肢を表示
-                if (correctIndex === 0) {
-                    choice1.classList.add('correct');
-                } else {
-                    choice2.classList.add('correct');
-                }
-            } else if (choiceIndex === correctIndex) {
-                // 正解
-                const bonus = Math.max(1, timeLeft + 1);
-                const points = 10 + bonus;
-                score += points;
-                resultElement.textContent = `正解！ +${points}点 (時間ボーナス: +${bonus}点)`;
-                
-                if (choiceIndex === 0) {
-                    choice1.classList.add('correct');
-                } else {
-                    choice2.classList.add('correct');
-                }
-            } else {
-                // 不正解
-                const penalty = 5 + (timeLeft + 1);
-                score -= penalty;
-                resultElement.textContent = `不正解！ -${penalty}点 (時間ペナルティ: -${timeLeft + 1}点)`;
-                
-                if (choiceIndex === 0) {
-                    choice1.classList.add('incorrect');
-                    choice2.classList.add('correct');
-                } else {
-                    choice2.classList.add('incorrect');
-                    choice1.classList.add('correct');
-                }
-            }
-            
-            document.getElementById('score').textContent = score;
-            document.getElementById('nextBtn').classList.remove('hidden');
-        }
-
-        function nextQuestion() {
-            currentQuestion++;
-            
-            if (currentQuestion >= questions.length) {
-                // ゲーム終了
-                const resultElement = document.getElementById('result');
-                resultElement.innerHTML = `<div style="font-size: clamp(24px, 5vw, 32px); margin-bottom: 20px;">ゲーム終了！</div><div>最終スコア: ${score}点</div>`;
-                document.getElementById('nextBtn').textContent = 'もう一度プレイ';
-                document.getElementById('nextBtn').onclick = resetGame;
-            } else {
-                showQuestion();
-            }
-        }
-
-        function resetGame() {
+        
+        function startQuiz() {
+            document.getElementById('startScreen').classList.remove('active');
+            document.getElementById('quizScreen').classList.add('active');
             currentQuestion = 0;
             score = 0;
-            document.getElementById('score').textContent = score;
-            document.getElementById('nextBtn').textContent = '次の問題';
-            document.getElementById('nextBtn').onclick = nextQuestion;
-            document.getElementById('gameScreen').classList.add('hidden');
-            document.getElementById('startScreen').classList.remove('hidden');
+            answers = [];
+            
+            // 問題をシャッフル
+            shuffledQuizData = shuffleArray(quizData);
+            
+            showQuestion();
         }
-
-        // タッチデバイスの振動フィードバック（対応デバイスのみ）
-        function vibrate() {
-            if ('vibrate' in navigator) {
-                navigator.vibrate(50);
+        
+        function showQuestion() {
+            if (currentQuestion >= shuffledQuizData.length) {
+                showResults();
+                return;
+            }
+            
+            const question = shuffledQuizData[currentQuestion];
+            document.getElementById('quizImage').src = question.image;
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('currentScore').textContent = score;
+            
+            // プログレスバー更新
+            const progress = ((currentQuestion + 1) / shuffledQuizData.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // 問題と画像を表示
+            document.getElementById('questionDisplay').style.display = 'block';
+            document.getElementById('choiceSection').style.display = 'none';
+            document.getElementById('result').style.display = 'none';
+            
+            // 2.5秒後に選択肢を表示
+            setTimeout(() => {
+                showChoices();
+            }, 2500);
+        }
+        
+        function showChoices() {
+            const question = shuffledQuizData[currentQuestion];
+            
+            // 選択肢の順番をランダムにする
+            currentChoiceOrder = [0, 1];
+            if (Math.random() > 0.5) {
+                currentChoiceOrder = [1, 0];
+            }
+            
+            document.getElementById('choice0').textContent = question.choices[currentChoiceOrder[0]];
+            document.getElementById('choice1').textContent = question.choices[currentChoiceOrder[1]];
+            document.getElementById('choiceSection').style.display = 'block';
+            
+            // タイマー開始
+            timeLeft = 10;
+            startTime = Date.now();
+            updateTimer();
+            timer = setInterval(updateTimer, 100);
+        }
+        
+        function updateTimer() {
+            timeLeft = Math.max(0, 10 - (Date.now() - startTime) / 1000);
+            document.getElementById('timeLeft').textContent = Math.ceil(timeLeft);
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                selectChoice(-1); // タイムアウト
             }
         }
-
-        // タッチ操作の改善
-        document.addEventListener('DOMContentLoaded', function() {
-            // ボタンにタッチイベントを追加
-            const buttons = document.querySelectorAll('.choice-btn, .start-btn, .next-btn');
-            buttons.forEach(button => {
-                button.addEventListener('touchstart', function() {
-                    vibrate();
-                });
+        
+        function selectChoice(buttonIndex) {
+            clearInterval(timer);
+            
+            const question = shuffledQuizData[currentQuestion];
+            const responseTime = (Date.now() - startTime) / 1000;
+            
+            // 実際に選択された選択肢のインデックスを取得
+            const actualChoice = currentChoiceOrder[buttonIndex];
+            const isCorrect = actualChoice === question.correct;
+            
+            let pointsEarned = 0;
+            
+            if (buttonIndex === -1) {
+                // タイムアウト
+                pointsEarned = -50;
+                document.getElementById('result').textContent = '⏰ 時間切れ！ -50点';
+                document.getElementById('result').className = 'result incorrect';
+            } else if (isCorrect) {
+                // 正解の場合、早く答えるほど高得点
+                pointsEarned = Math.max(50, Math.floor(150 - responseTime * 10));
+                document.getElementById('result').textContent = `✅ 正解！ +${pointsEarned}点`;
+                document.getElementById('result').className = 'result correct';
+            } else {
+                // 不正解の場合、マイナス点
+                pointsEarned = Math.min(-50, Math.floor(responseTime * 10-150));
+                document.getElementById('result').textContent = `❌ 不正解！ ${pointsEarned}点`;
+                document.getElementById('result').className = 'result incorrect';
+            }
+            
+            score += pointsEarned;
+            answers.push({
+                question: currentQuestion + 1,
+                choice: actualChoice,
+                correct: isCorrect,
+                responseTime: responseTime,
+                points: pointsEarned
             });
-
-            // 画面の向きが変わった時の調整
-            window.addEventListener('orientationchange', function() {
-                setTimeout(() => {
-                    window.scrollTo(0, 0);
-                }, 100);
+            
+            document.getElementById('currentScore').textContent = score;
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('choiceSection').style.display = 'none';
+            
+            // 2秒後に次の問題へ
+            setTimeout(() => {
+                currentQuestion++;
+                showQuestion();
+            }, 2000);
+        }
+        
+        function showResults() {
+            document.getElementById('quizScreen').classList.remove('active');
+            document.getElementById('resultScreen').classList.add('active');
+            
+            document.getElementById('finalScore').textContent = `最終スコア: ${score}点`;
+            
+            let resultText = '';
+            let correctCount = 0;
+            
+            answers.forEach((answer, index) => {
+                if (answer.correct) correctCount++;
+                resultText += `第${answer.question}問: ${answer.correct ? '正解' : '不正解'} (${answer.points}点)\n`;
             });
-
-            // リサイズ時の調整
-            window.addEventListener('resize', function() {
-                setTimeout(() => {
-                    window.scrollTo(0, 0);
-                }, 100);
-            });
-        });
+            
+            const accuracy = Math.round((correctCount / shuffledQuizData.length) * 100);
+            resultText += `\n正解率: ${accuracy}%`;
+            
+            let grade = 'もう一度チャレンジして最高記録を目指そう';
+            
+            document.getElementById('resultDetails').innerHTML = `
+                <div style="white-space: pre-line; margin: 1rem 0;">${resultText}</div>
+                <div style="font-size: 1.3rem; color: #ffd700; margin: 1rem 0;">${grade}</div>
+            `;
+        }
+        
+        function restartQuiz() {
+            document.getElementById('resultScreen').classList.remove('active');
+            document.getElementById('startScreen').classList.add('active');
+        }
     </script>
 </body>
 </html>
