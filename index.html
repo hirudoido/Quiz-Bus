@@ -234,7 +234,7 @@
                  vertical-align:top;
              }
             .timer {
-                margin: 0;
+                margin: 0.5rem 0;
                }
                
         }
@@ -291,8 +291,15 @@
     </div>
 
     <script>
-        // クイズデータ（画像URLを実際のURLに置き換えてください）
-        //const quizData = 
+                // クイズデータ（画像URLを実際のURLに置き換えてください）
+      /*  const quizData = [ {
+                "image": "bass/IMGP1400.webp",
+                "question": "これはどの会社のバス？",
+                "choices": ["小田急バス", "京王電鉄バス"],
+                "correct": 0
+            }];*/
+            
+        // クイズデータは外部ファイルから取得します
         fetch('./data.json')
           .then(res => res.json())
           .then(data => {
