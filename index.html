@@ -217,11 +217,16 @@
             }
             
             .quiz-image {
-                max-height: 200px;
+                max-height: 250px;
+            }
+                 .question {
+                    font-size: 1rem;
+                margin: 0;
+                padding:0.25;
             }
         }
         
-        @media (max-width: 360px) {
+        @media (max-width: 380px) {
             .container {
                 padding: 0.5rem;
             }
@@ -230,21 +235,34 @@
                 padding: 0.5rem;
                 font-size: 0.9rem;
             }
-             .quiz-image {
+            .quiz-image {
+                width: 75%;
                  vertical-align:top;
+                 margin: 0;
              }
-            .timer {
-                margin: 0.5rem 0;
-               }
-               
+             .timer{
+                font-size: 1.0rem;
+                margin: 0;
+                 padding:0.2rem;
+             }
+            .score {
+            margin: 0.2rem 0;
         }
+            .progress {
+            margin: 0.1rem 0;
+        }
+        .question{
+            padding:0.2rem;
+        }
+
+    }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- スタート画面 -->
         <div class="screen active" id="startScreen">
-            <h1>🎯 二択早押しクイズ</h1>
+            <h1> 二択早押しクイズ</h1>
             <div class="rules">
                 <h3>📋 ルール説明</h3>
                 <p>• 画像と問題が2.5秒間表示されます</p>
@@ -252,8 +270,9 @@
                 <p>• 早く正解するほど高得点が獲得できます</p>
                 <p>• 間違えると得点がマイナスになります</p>
                 <p>• 全問題終了後に結果が表示されます</p>
+                <p>• プロトタイプだからもしかしたらコッソリアップデートするかも</p>
             </div>
-            <button class="start-btn" onclick="startQuiz()">🚀 クイズスタート</button>
+            <button class="start-btn" onclick="startQuiz()">🚌 クイズスタート</button>
         </div>
         
         <!-- クイズ画面 -->
@@ -291,15 +310,8 @@
     </div>
 
     <script>
-                // クイズデータ（画像URLを実際のURLに置き換えてください）
-      /*  const quizData = [ {
-                "image": "bass/IMGP1400.webp",
-                "question": "これはどの会社のバス？",
-                "choices": ["小田急バス", "京王電鉄バス"],
-                "correct": 0
-            }];*/
-            
-        // クイズデータは外部ファイルから取得します
+        // クイズデータ（画像URLを実際のURLに置き換えてください）
+        //const quizData = 
         fetch('./data.json')
           .then(res => res.json())
           .then(data => {
