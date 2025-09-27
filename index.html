@@ -341,7 +341,7 @@
         let currentChoiceOrder = [];
         
         // 配列をシャッフルする関数
-        function shuffleArray(array) {
+        function shuffleArray(array,a) {
             const shuffled = [...array];
             for (let i = shuffled.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -349,17 +349,6 @@
             }
 
             return shuffled;
-        }
-                // 配列をシャッフルする関数
-        function shuffleArr5(array) {
-            const shuffled = [...array];
-            for (let i = 2; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-
-            //上位5問を返す
-            return shuffled.slice(0, 5);
         }
         
         function startQuiz(a) {
@@ -371,7 +360,8 @@
             console.log(a);
             // 問題をシャッフル
             if(a==1){
-                shuffledQuizData = shuffleArr5(quizData);
+                //上位5問をランダムに抽出
+                shuffledQuizData = shuffleArray(quizData).slice(0, 5);
             } else { 
                 shuffledQuizData = shuffleArray(quizData);
             }
