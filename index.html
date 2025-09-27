@@ -393,13 +393,21 @@
             document.getElementById('questionDisplay').style.display = 'block';
             document.getElementById('choiceSection').style.display = 'none';
             document.getElementById('result').style.display = 'none';
-            
+            if (currentQuestion + 1 < shuffledQuizData.length) {
+                preloadImage(shuffledQuizData[currentQuestion + 1].image);
+            }
+
             // 2.5秒後に選択肢を表示
             setTimeout(() => {
                 showChoices();
             }, 2500);
         }
-        
+
+        function preloadImage(url) {
+        const img = new Image();
+        img.src = url;
+        }
+
         function showChoices() {
             const question = shuffledQuizData[currentQuestion];
             
