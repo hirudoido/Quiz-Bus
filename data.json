@@ -1,7 +1,7 @@
   
       [
             {
-                "image": "bass/IMGP1400.webp",
+                "image": "bass/IMGP1400.jpg",
                 "question": "これはどの会社のバス？",
                 "choices": ["小田急バス", "京王電鉄バス"],
                 "correct": 0
