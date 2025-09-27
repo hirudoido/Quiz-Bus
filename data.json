@@ -35,5 +35,11 @@
                 "question": "このバスの開発したメーカーは？",
                "choices": ["Bamford Bus Company", "スカニア・バンホール"],
                 "correct": 0
+            },  
+            {
+                "image": "bass/ta-minaru.jpg",
+                "question": "この場所は？",
+               "choices": ["新宿高速バスターミナル", "東京駅高速バスターミナル"],
+                "correct": 0
             }
   ]
