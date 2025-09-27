@@ -69,17 +69,23 @@
             margin-bottom: 1rem;
         }
         
-        .start-btn, .choice-btn {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
+        .start-btn1,.start-btn2, .choice-btn {
             border: none;
             padding: 1rem 2rem;
             font-size: 1.2rem;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin: 0.8rem 0;
+            margin: 0.8rem 1rem;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .start-btn1 {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+        .start-btn2 {
+            background: linear-gradient(45deg, #a66bff, #a319de);
+            color: white;
         }
         
         .start-btn:hover, .choice-btn:hover {
@@ -274,8 +280,8 @@
                 <p>• フォーマルスタートは用意したすべて問題に全て答えてもらいます</p>
                 <p>• プロトタイプだからもしかしたらコッソリアップデートするかも</p>
             </div>
-            <button class="start-btn" onclick="startQuiz()">🚌 クイックスタート</button>
-            <button class="start-btn" onclick="startQuiz()">🚌 フォーマルスタート</button>
+            <button class="start-btn1" onclick="startQuiz(1)">🚌 クイックスタート</button>
+            <button class="start-btn2" onclick="startQuiz(2)">🚌 フォーマルスタート</button>
         </div>
         
         <!-- クイズ画面 -->
@@ -342,7 +348,7 @@
             return shuffled;
         }
         
-        function startQuiz() {
+        function startQuiz(a) {
             document.getElementById('startScreen').classList.remove('active');
             document.getElementById('quizScreen').classList.add('active');
             currentQuestion = 0;
