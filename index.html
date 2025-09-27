@@ -351,7 +351,7 @@
                 // 配列をシャッフルする関数
         function shuffleArr5(array) {
             const shuffled = [...array];
-            for (let i = 5; i > 0; i--) {
+            for (let i = 4; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
             }
@@ -366,6 +366,13 @@
             score = 0;
             answers = [];
             
+            fetch('./data.json')
+          .then(res => res.json())
+          .then(data => {
+            quizData = data;
+            console.log(quizData); // ここで変数に格納された内容が見られる
+          });
+
             // 問題をシャッフル
             if(a==1){
                 shuffledQuizData = shuffleArr5(quizData);
