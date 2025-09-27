@@ -348,6 +348,15 @@
             }
             return shuffled;
         }
+                // 配列をシャッフルする関数
+        function shuffleArr5(array) {
+            const shuffled = [...array];
+            for (let i = 5; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
         
         function startQuiz(a) {
             document.getElementById('startScreen').classList.remove('active');
@@ -357,8 +366,10 @@
             answers = [];
             
             // 問題をシャッフル
-            shuffledQuizData = shuffleArray(quizData);
-            
+            if(a==1){
+                shuffledQuizData = shuffleArr5(quizData);
+            } else{ shuffledQuizData = shuffleArray(quizData);
+            }
             showQuestion();
         }
         
