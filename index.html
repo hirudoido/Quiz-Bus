@@ -503,11 +503,12 @@
             document.getElementById('resultScreen').classList.remove('active');
             document.getElementById('startScreen').classList.add('active');
         }
-        (".hoge").addEventListener("touchstart", function(event) {
-            if (event.touches.length > 1) {
-                event.preventDefault();
-            }
-        }, {passive: false});
+        // スクロール無効化
+(".hoge").addEventListener("touchstart", function(event) {
+    if (event.touches.length > 1) {
+        event.preventDefault();
+    }
+}, {passive: false});
 
     </script>
 </body>
