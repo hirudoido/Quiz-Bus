@@ -276,7 +276,7 @@
                 <p>• 早く正解するほど高得点が獲得できます</p>
                 <p>• 間違えると得点がマイナスになります</p>
                 <p>• 全問題終了後に結果が表示されます</p>
-                <p>• クイックスタートは7問で終わります</p>
+                <p>• クイックスタートは5問で終わります</p>
                 <p>• フォーマルスタートは用意したすべて問題に全て答えてもらいます</p>
                 <p>• プロトタイプだからもしかしたらコッソリアップデートするかも</p>
             </div>
@@ -321,13 +321,51 @@
     <script>
         //4
         // クイズデータ（画像URLを実際のURLに置き換えてください）
-        //const quizData = 
-        fetch('./data.json')
+        const quizData =   
+      [
+            {
+                "image": "bass/IMGP1400.webp",
+                "question": "これはどの会社のバス？",
+                "choices": ["小田急バス", "京王電鉄バス"],
+                "correct": 0
+            },
+            {
+                "image": "bass/1982.jpg",
+                "question": "都営バスは何年から始まった？",
+               "choices": ["1963年", "1924年"],
+                "correct": 1
+            },
+            {
+                "image": "bass/o0873058215433130096.jpg",
+                "question": "このバスの名称は？",
+               "choices": ["連節バス", "高速バス"],
+                "correct": 0
+            },
+            {
+                "image": "bass/busday-img01.jpg",
+                "question": "バスの日はいつ",
+               "choices": ["10月14日", "9月20日"],
+                "correct": 1
+            },
+            {
+                "image": "bass/ph_micro.png",
+                "question": "この車種は？",
+               "choices": ["大型バス", "マイクロバス"],
+                "correct": 1
+            },  
+            {
+                "image": "bass/blob.jpg",
+                "question": "このバスの開発したメーカーは？",
+               "choices": ["Bamford Bus Company", "スカニア・バンホール"],
+                "correct": 0
+            }
+  ]
+       /* fetch('./data.json')
           .then(res => res.json())
           .then(data => {
             quizData = data;
             console.log(quizData); // ここで変数に格納された内容が見られる
-          });
+          });*/
 
 
         let currentQuestion = 0;
@@ -346,17 +384,19 @@
                 const j = Math.floor(Math.random() * (i + 1));
                 [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
             }
+
             return shuffled;
         }
                 // 配列をシャッフルする関数
         function shuffleArr5(array) {
             const shuffled = [...array];
-            for (let i = 4; i > 0; i--) {
+            for (let i = 2; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
             }
-            console.log(shuffled);
-            return shuffled;
+
+            //上位5問を返す
+            return shuffled.slice(0, 5);
         }
         
         function startQuiz(a) {
@@ -365,19 +405,14 @@
             currentQuestion = 0;
             score = 0;
             answers = [];
-            
-            fetch('./data.json')
-          .then(res => res.json())
-          .then(data => {
-            quizData = data;
-            console.log(quizData); // ここで変数に格納された内容が見られる
-          });
-
+            console.log(a);
             // 問題をシャッフル
             if(a==1){
                 shuffledQuizData = shuffleArr5(quizData);
-            } else{ shuffledQuizData = shuffleArray(quizData);
+            } else { 
+                shuffledQuizData = shuffleArray(quizData);
             }
+            console.log(shuffledQuizData);
             showQuestion();
         }
         
