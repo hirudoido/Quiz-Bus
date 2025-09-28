@@ -49,7 +49,7 @@
                 "correct": 0
             },  
             {
-                "image": ".\toeibus-fewpassengers01.webp",
+                "image": "bass\toeibus-fewpassengers01.webp",
                 "question": "このバスは？",
                "choices": ["都営バス", "京急バス"],
                 "correct": 0
