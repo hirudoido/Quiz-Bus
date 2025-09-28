@@ -47,6 +47,13 @@
                 "question": "どのエネルギーを使って走る？",
                "choices": ["水素エネルギー", "ガソリン"],
                 "correct": 0
+            },  
+            {
+                "image": "bass/image-06.png",
+                "question": "どのエネルギーを使って走る？",
+               "choices": ["水素エネルギー", "ガソリン"],
+                "correct": 0
             }
+  ]
   ]
   
