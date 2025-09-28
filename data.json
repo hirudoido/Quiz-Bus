@@ -41,5 +41,12 @@
                 "question": "この場所は？",
                "choices": ["新宿高速バスターミナル", "東京駅高速バスターミナル"],
                 "correct": 0
+            },  
+            {
+                "image": "bass/image-06.jpg",
+                "question": "どのエネルギーを使って走る？",
+               "choices": ["水素エネルギー", "ガソリン"],
+                "correct": 0
             }
+  ]
   ]
