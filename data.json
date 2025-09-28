@@ -49,9 +49,9 @@
                 "correct": 0
             },  
             {
-                "image": "./image-06.jpg",
-                "question": "どのエネルギーを使って走る？",
-               "choices": ["水素エネルギー", "ガソリン"],
+                "image": ".\toeibus-fewpassengers01.webp",
+                "question": "このバスは？",
+               "choices": ["都営バス", "京急バス"],
                 "correct": 0
             }
   ]
