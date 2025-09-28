@@ -1,55 +1,55 @@
   
       [
             {
-                "image": "bass/IMGP1400.jpg",
+                "image": "bass/01.jpg",
                 "question": "これはどの会社のバス？",
                 "choices": ["小田急バス", "京王電鉄バス"],
                 "correct": 0
             },
             {
-                "image": "bass/1982.jpg",
+                "image": "bass/02.jpg",
                 "question": "都営バスは何年から始まった？",
                "choices": ["1963年", "1924年"],
                 "correct": 1
             },
             {
-                "image": "bass/o0873058215433130096.jpg",
+                "image": "bass/03.jpg",
                 "question": "このバスの名称は？",
                "choices": ["連節バス", "高速バス"],
                 "correct": 0
             },
             {
-                "image": "bass/busday-img01.jpg",
+                "image": "bass/04.jpg",
                 "question": "バスの日はいつ",
                "choices": ["10月14日", "9月20日"],
                 "correct": 1
             },
             {
-                "image": "bass/ph_micro.png",
+                "image": "bass/05.png",
                 "question": "この車種は？",
                "choices": ["大型バス", "マイクロバス"],
                 "correct": 1
             },  
             {
-                "image": "bass/blob.jpg",
+                "image": "bass/06.jpg",
                 "question": "このバスの開発したメーカーは？",
                "choices": ["Bamford Bus Company", "スカニア・バンホール"],
                 "correct": 0
             },  
             {
-                "image": "bass/ta-minaru.jpg",
+                "image": "bass/07.jpg",
                 "question": "この場所は？",
                "choices": ["新宿高速バスターミナル", "東京駅高速バスターミナル"],
                 "correct": 0
             },  
             {
-                "image": "bass/image-06.jpg",
+                "image": "bass/08.png",
                 "question": "どのエネルギーを使って走る？",
                "choices": ["水素エネルギー", "ガソリン"],
                 "correct": 0
             },  
             {
-                "image": "bass\toeibus-fewpassengers01.webp",
+                "image": "bass/09.webp",
                 "question": "このバスは？",
                "choices": ["都営バス", "京急バス"],
                 "correct": 0
