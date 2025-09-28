@@ -283,7 +283,6 @@
                 <p>• 全問題終了後に結果が表示されます</p>
                 <p>• クイックスタートは5問で終わります</p>
                 <p>• フォーマルスタートは用意したすべて問題に全て答えてもらいます</p>
-                <p>• プロトタイプだからもしかしたらコッソリアップデートするかも</p>
             </div>
             <button class="start-btn1" onclick="startQuiz(1)">🚌 クイックスタート</button>
             <button class="start-btn2" onclick="startQuiz(2)">🚌 フォーマルスタート</button>
@@ -503,7 +502,7 @@
             
             const accuracy = Math.round((correctCount / shuffledQuizData.length) * 100);
             resultText += `\n正解率: ${accuracy}%`;
-            
+            console.log(accuracy, score, shuffledQuizData.length);
             let grade = 'もう一度チャレンジして最高記録を目指そう';
             
             document.getElementById('resultDetails').innerHTML = `
