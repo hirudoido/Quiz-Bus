@@ -325,7 +325,18 @@
     <script>
         //432
         // クイズデータ（画像URLを実際のURLに置き換えてください）
-  //      const quizData =   
+      const quizData =           [    {
+                "image": "bass/01.jpg",
+                "question": "これはどの会社のバス？",
+                "choices": ["小田急バス", "京王電鉄バス"],
+                "correct": 0
+            },
+            {
+                "image": "bass/02.jpg",
+                "question": "都営バスは何年から始まった？",
+               "choices": ["1963年", "1924年"],
+                "correct": 1
+            }];
 
         fetch('./data.json')
           .then(res => res.json())
@@ -503,7 +514,21 @@
             const accuracy = Math.round((correctCount / shuffledQuizData.length) * 100);
             resultText += `\n正解率: ${accuracy}%`;
             console.log(accuracy, score, shuffledQuizData.length);
-            let grade = 'もう一度チャレンジして最高記録を目指そう';
+            if (accuracy === 100 && score >= shuffledQuizData.length * 145) {
+                grade = 'え？運ゲーおめでとうございます‼';
+            } else if (accuracy >= 100 && score >= shuffledQuizData.length * 90) {
+                grade = '全問正解おめでとうございます‼もっと高いスコアを目指そう‼';
+            } else if (accuracy >= 60 && score >= shuffledQuizData.length * 50) {
+                grade = ' よく頑張りました！ ';
+            } else if ( score == shuffledQuizData.length * 0) {
+                grade = 'よう０点取れましたね！';
+            } else if (accuracy >= 10 && score <= shuffledQuizData.length * -50) {
+                grade = ' マイナスに行っちゃった ';
+            } else if (accuracy == 0 && score <= shuffledQuizData.length * -145) {
+                grade = ' よくぞここまでマイナスに...逆にすごい ';
+            } else {
+                grade = ' 残念！次は頑張りましょう！ ';
+            }
             
             document.getElementById('resultDetails').innerHTML = `
                 <div style="white-space: pre-line; margin: 1rem 0;">${resultText}</div>
