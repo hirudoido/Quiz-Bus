@@ -518,8 +518,10 @@
                 grade = 'え？運ゲーおめでとうございます‼';
             } else if (accuracy >= 100 && score >= shuffledQuizData.length * 90) {
                 grade = '全問正解おめでとうございます‼もっと高いスコアを目指そう‼';
-            } else if (accuracy >= 60 && score >= shuffledQuizData.length * 50) {
-                grade = ' よく頑張りました！ ';
+            } else if (accuracy >= 70 && score >= shuffledQuizData.length * 75) {
+                grade = ' 素晴らしい！高得点を目指そう！ ';
+            } else if (accuracy >= 60 && score >= shuffledQuizData.length * 50) {            
+                grade = ' よく頑張りました！ もっと高いスコアを目指そう！ ';
             } else if ( score == shuffledQuizData.length * 0) {
                 grade = 'よう０点取れましたね！';
             } else if (accuracy >= 10 && score <= shuffledQuizData.length * -50) {
