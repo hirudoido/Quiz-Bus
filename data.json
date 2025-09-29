@@ -59,6 +59,12 @@
                 "question": "どこの営業所？",
                "choices": ["都営バス品川営業所", "都営バス渋谷営業所"],
                 "correct": 0
+            },  
+            {
+                "image": "bass/11.jpg",
+                "question": "この路線図のバスは？",
+               "choices": ["東急バス", "京王バス"],
+                "correct": 1
             }
   ]
   
