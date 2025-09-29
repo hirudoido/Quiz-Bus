@@ -53,6 +53,12 @@
                 "question": "このバスは？",
                "choices": ["都営バス", "京急バス"],
                 "correct": 0
+            },  
+            {
+                "image": "bass/10.jpg",
+                "question": "どこの営業所？",
+               "choices": ["都営バス品川営業所", "都営バス渋谷営業所"],
+                "correct": 0
             }
   ]
   
