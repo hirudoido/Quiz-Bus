@@ -65,6 +65,12 @@
                 "question": "この路線図のバスは？",
                "choices": ["東急バス", "京王バス"],
                 "correct": 1
+            },  
+            {
+                "image": "bass/12.jpg",
+                "question": "ドアの数は？",
+               "choices": ["３つ", "２つ"],
+                "correct": 0
             }
   ]
   
