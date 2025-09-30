@@ -71,6 +71,12 @@
                 "question": "ドアの数は？",
                "choices": ["３つ", "２つ"],
                 "correct": 0
+            },  
+            {
+                "image": "bass/13.jpg",
+                "question": "西武バスの旧名称は？",
+               "choices": ["東浦自動車", "富士急バス"],
+                "correct": 0
             }
   ]
   
