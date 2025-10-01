@@ -77,6 +77,12 @@
                 "question": "西武バスの旧名称は？",
                "choices": ["東浦自動車", "富士急バス"],
                 "correct": 0
+            },  
+            {
+                "image": "bass/14.jpg",
+                "question": "この正式名称は？",
+               "choices": ["整理券発券機", "運賃箱"],
+                "correct": 0
             }
   ]
   
