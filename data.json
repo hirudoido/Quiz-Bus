@@ -83,6 +83,12 @@
                 "question": "この正式名称は？",
                "choices": ["整理券発券機", "運賃箱"],
                 "correct": 0
+            },  
+            {
+                "image": "bass/15.jpg",
+                "question": "プレートのひらがなの意味は？",
+               "choices": ["車両の用途分け", "バス会社の種類分け"],
+                "correct": 0
             }
   ]
   
